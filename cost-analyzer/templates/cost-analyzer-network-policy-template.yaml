@@ -4,6 +4,7 @@ kind: NetworkPolicy
 apiVersion: {{ include "cost-analyzer.networkPolicy.apiVersion" . }}
 metadata:
   name: {{ template "cost-analyzer.fullname" . }}
+  namespace: {{ .Release.Namespace }}
 {{- if .Values.networkPolicy.costAnalyzer.annotations }}
   annotations:
 {{ toYaml .Values.networkPolicy.costAnalyzer.annotations | indent 4}}
@@ -31,7 +32,7 @@ spec:
     - to:
 {{ toYaml $rule.selectors | indent 7 }}
       ports:
-{{ toYaml $rule.ports | indent 9 }}  
+{{ toYaml $rule.ports | indent 9 }}
 {{- end }}
 {{- end }}
 {{- if .Values.networkPolicy.costAnalyzer.ingressRules }}
@@ -40,7 +41,7 @@ spec:
     - from:
 {{ toYaml $rule.selectors | indent 7 }}
       ports:
-{{ toYaml $rule.ports | indent 9 }}  
+{{ toYaml $rule.ports | indent 9 }}
 {{- end }}
 {{- end }}
 {{- end -}}

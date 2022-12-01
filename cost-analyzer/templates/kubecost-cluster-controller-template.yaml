@@ -4,13 +4,14 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ template "kubecost.clusterControllerName" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{ include "cost-analyzer.commonLabels" . | nindent 4 }}
 ---
 #
-# NOTE: 
-# The following ClusterRole permissions are only created and assigned for the 
-# cluster controller feature. They will not be added to any clusters by default. 
+# NOTE:
+# The following ClusterRole permissions are only created and assigned for the
+# cluster controller feature. They will not be added to any clusters by default.
 #
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -70,7 +71,7 @@ rules:
       - events
       - services
     verbs:
-      - get 
+      - get
       - list
       - watch
   - apiGroups:
@@ -95,7 +96,7 @@ rules:
       - daemonsets
       - replicasets
     verbs:
-      - get 
+      - get
       - list
       - watch
       - create
@@ -131,9 +132,9 @@ rules:
       - get
       - list
       - watch
-  - apiGroups: 
+  - apiGroups:
       - storage.k8s.io
-    resources: 
+    resources:
       - storageclasses
     verbs:
       - get
@@ -167,6 +168,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "kubecost.clusterControllerName" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{ include "cost-analyzer.commonLabels" . | nindent 4 }}
 spec:
@@ -231,6 +233,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ template "kubecost.clusterControllerName" . }}-service
+  namespace: {{ .Release.Namespace }}
   labels:
     {{ include "cost-analyzer.commonLabels" . | nindent 4 }}
 spec:

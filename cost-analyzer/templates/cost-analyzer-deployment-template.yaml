@@ -4,6 +4,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "cost-analyzer.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{ include "cost-analyzer.commonLabels" . | nindent 4 }}
 {{- if .Values.kubecostDeployment }}
@@ -278,7 +279,7 @@ spec:
           {{- if .Values.sigV4Proxy.role_arn }}
           - --role-arn
           - {{ .Values.sigV4Proxy.role_arn }}
-          {{- end }}          
+          {{- end }}
           - --port
           - :{{ .Values.sigV4Proxy.port }}
           ports:

@@ -4,6 +4,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "thanos.componentname" (list $ "store") }}
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: {{ include "thanos.name" . }}
     helm.sh/chart: {{ include "thanos.chart" . }}
@@ -118,7 +119,7 @@ spec:
       {{- end }}
       {{- else }}
         emptyDir: {}
-      {{- end }}          
+      {{- end }}
       - name: config-volume
         secret:
           secretName: {{ include "thanos.secretname" . }}
